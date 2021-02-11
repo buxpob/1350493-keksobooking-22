@@ -1,10 +1,4 @@
-import { getRandomInt } from './util.js'
-import { getRandomIntFloatPoint } from './util.js'
-import { getRandomElements } from './util.js'
-import { getShuffelElements } from './util.js'
-
-export { createArrow };
-
+import { getRandomInt, getRandomIntFloatPoint, getRandomElements, getShuffelElements } from './util.js'
 
 const TYPES = ['palace', 'flat', 'house', 'bungalow'];
 const TIME_VALUES = ['12:00', '13:00', '14:00'];
@@ -68,7 +62,7 @@ const createObject = () => {
   }
 };
 
-const createArrow = (amount) => {
+export const createArrow = (amount) => {
   const newArrow = [];
   for (let i = 1; i <= amount; i++) {
     newArrow.push(createObject());
