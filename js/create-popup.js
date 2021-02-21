@@ -2,6 +2,9 @@ import { createDescriptionObjects } from './data.js'
 
 const setTextContent = function (el, field, value) {
   el.querySelector(`.popup__${field}`).textContent = value;
+  if (value.length === 0) {
+    el.querySelector(`.popup__${field}`).remove();
+  }
 }
 
 export const createPopup = function (quantity, numberElement) {
@@ -44,4 +47,3 @@ export const createPopup = function (quantity, numberElement) {
 
   listDescriptionObjects.appendChild(descriptionObjectFragment.childNodes[numberElement]);
 }
-
