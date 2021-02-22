@@ -1,11 +1,3 @@
-import { createArrow } from './data.js'
+import { createPopup } from './create-popup.js'
 
-createArrow(10);
-
-
-
-
-
-
-
-
+createPopup(5, 0);
