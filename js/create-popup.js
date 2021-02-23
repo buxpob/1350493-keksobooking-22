@@ -1,9 +1,23 @@
 import { createDescriptionObjects } from './data.js'
 
-const setTextContent = function (el, field, value) {
-  el.querySelector(`.popup__${field}`).textContent = value;
-  if (value.length === 0) {
+const setTextContent = function (el, field, value, unit = '') {
+  el.querySelector(`.popup__${field}`).textContent = `${value} ${unit}`;
+  if (value === undefined || value.length === 0) {
     el.querySelector(`.popup__${field}`).remove();
+  }
+}
+
+
+const getType = function (type) {
+  switch (type) {
+    case 'flat':
+      return 'Квартира';
+    case 'bungalow':
+      return 'Бунгало';
+    case 'house':
+      return 'Дом';
+    case 'palace':
+      return 'Дворец';
   }
 }
 
@@ -19,21 +33,7 @@ export const createPopup = function (quantity, numberElement) {
 
     setTextContent(el, 'title', item.offer.title);
     setTextContent(el, 'text--address', item.offer.address);
-    setTextContent(el, 'text--price', item.offer.price + ' ₽/ночь');
-
-    const getType = function (type) {
-      switch (type) {
-        case 'flat':
-          return 'Квартира';
-        case 'bungalow':
-          return 'Бунгало';
-        case 'house':
-          return 'Дом';
-        case 'palace':
-          return 'Дворец';
-      }
-    }
-
+    setTextContent(el, 'text--price', item.offer.price, '₽/ночь');
     setTextContent(el, 'type', getType(item.offer.type));
     setTextContent(el, 'text--capacity', `${item.offer.rooms} комнаты для ${item.offer.guests} гостей`);
     setTextContent(el, 'text--time', `Заезд после ${item.offer.checkin}, выезд до ${item.offer.checkout}`);
