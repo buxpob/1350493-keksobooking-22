@@ -4,28 +4,16 @@ const pricePerNight = document.querySelector('#price');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 
-const changePrice = function () {
-  let price;
-  switch (typePlacement.value) {
-    case 'bungalow':
-      price = '0';
-      break;
-    case 'flat':
-      price = '1000';
-      break;
-    case 'house':
-      price = '5000';
-      break;
-    case 'palace':
-      price = '10000';
-      break;
-  }
-  return price;
-}
+const MapPlaceToPrice = {
+  bungalow: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000,
+};
 
 export const userInputForm = function () {
   typePlacement.onchange = function () {
-    pricePerNight.placeholder = changePrice();
+    pricePerNight.placeholder = MapPlaceToPrice[typePlacement.value];
   }
 
   timeIn.onchange = function () {

@@ -1,12 +1,9 @@
-import { createDescriptionObjects } from './data.js'
-
 const setTextContent = function (el, field, value, unit = '') {
   el.querySelector(`.popup__${field}`).textContent = `${value} ${unit}`;
   if (value === undefined || value.length === 0) {
     el.querySelector(`.popup__${field}`).remove();
   }
 }
-
 
 const getType = function (type) {
   switch (type) {
@@ -21,14 +18,13 @@ const getType = function (type) {
   }
 }
 
-export const createPopup = function (quantity, numberElement) {
+export const createPopup = function (arr) {
 
-  const descriptionObjects = createDescriptionObjects(quantity);
   const listDescriptionObjects = document.querySelector('.map__canvas');
   const descriptionObjectTemplate = document.querySelector('#card').content.querySelector('.popup');
   const descriptionObjectFragment = document.createDocumentFragment();
 
-  descriptionObjects.forEach((item) => {
+  arr.forEach((item) => {
     const el = descriptionObjectTemplate.cloneNode(true);
 
     setTextContent(el, 'title', item.offer.title);
@@ -43,7 +39,9 @@ export const createPopup = function (quantity, numberElement) {
     setTextContent(el, 'avatar', item.author.avatar);
 
     descriptionObjectFragment.appendChild(el);
+
   });
 
-  listDescriptionObjects.appendChild(descriptionObjectFragment.childNodes[numberElement]);
+  listDescriptionObjects.appendChild(descriptionObjectFragment);
+
 }

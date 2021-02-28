@@ -39,7 +39,7 @@ const getRandomElementsList = (elements) => {
 const createOffer = () => {
   return {
     title: 'Заголовок объявления',
-    address: getRandomInt(1, 100) + ', ' + getRandomInt(1, 100),
+    address: `${getRandomInt(1, 100)}, ${getRandomInt(1, 100)}`,
     price: getRandomInt(1, 10),
     type: getRandomElements(TYPES),
     rooms: getRandomInt(1, 10),
@@ -64,7 +64,7 @@ const createObject = () => {
 
 export const createDescriptionObjects = (amount) => {
   const newDescriptionObject = [];
-  for (let i = 1; i <= amount; i++) {
+  for (let i = 0; i < amount; i++) {
     newDescriptionObject.push(createObject());
   }
   return newDescriptionObject;
