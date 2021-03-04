@@ -1,5 +1,6 @@
-import { createPopup } from './create-popup.js'
 import { userInputForm } from './user-input-form.js'
+import { mapConnect } from './map-connect.js'
 
-createPopup(5, 0);
 userInputForm();
+
+mapConnect();

@@ -27,3 +27,19 @@ export const getRandomElements = (elements) => {
 export const getShuffelElements = (elements) => {
   return elements.sort(() => Math.random() - 0.5);
 }
+
+export const addDesibledCondition = (el, attributeName) => {
+  el.classList.add('ad-form--disabled');
+  const itemList = el.querySelectorAll(`${attributeName}`);
+  itemList.forEach((item) => {
+    item.setAttribute('disabled', 'disabled');
+  })
+}
+
+export const removeDesibledCondition = (el, attributeName) => {
+  el.classList.remove('ad-form--disabled');
+  const itemList = el.querySelectorAll(`${attributeName}`);
+  itemList.forEach((item) => {
+    item.removeAttribute('disabled', 'disabled');
+  })
+}
