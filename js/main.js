@@ -4,4 +4,3 @@ import { mapConnect } from './map-connect.js'
 userInputForm();
 
 mapConnect();
-

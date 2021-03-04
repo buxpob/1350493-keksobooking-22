@@ -1,3 +1,5 @@
+/* global L */
+
 import { addDesibledCondition } from './util.js'
 import { removeDesibledCondition } from './util.js'
 import { createPopup } from './create-popup.js'
@@ -47,7 +49,7 @@ export const mapConnect = function () {
   mainPinMarker.addTo(map);
 
   let mapCoordinates = document.querySelector('#address');
-  const mapCoordinatesStart = `${mainPinMarker._latlng.lat}, ${mainPinMarker._latlng.lat}`;
+  const mapCoordinatesStart = `${mainPinMarker._latlng.lat}, ${mainPinMarker._latlng.lng}`;
   mapCoordinates.value = mapCoordinatesStart;
 
   mainPinMarker.on('moveend', (evt) => {
