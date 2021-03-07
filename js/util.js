@@ -43,3 +43,47 @@ export const removeDesibledCondition = (el, attributeName) => {
     item.removeAttribute('disabled', 'disabled');
   })
 }
+
+export const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '999';
+  alertContainer.style.position = 'fixed';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = 0;
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '28px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, 5000);
+}
+
+
+export const showPopup = function (el) {
+  const popupTemplateInfo = document.querySelector(`#${el}`).content.querySelector(`.${el}`);
+  const popupTemplate = popupTemplateInfo.cloneNode(true);
+  popupTemplate.style.zIndex = 999;
+  document.body.append(popupTemplate);
+  popupTemplate.style.display = 'none';
+  popupTemplate.style.display = 'block';
+
+
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === 27) {
+      popupTemplate.style.display = 'none';
+    }
+  })
+
+  window.onclick = function (evt) {
+    if (evt.target == popupTemplate) {
+      popupTemplate.style.display = 'none';
+    }
+  }
+}

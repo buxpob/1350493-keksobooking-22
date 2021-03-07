@@ -2,8 +2,6 @@
 
 import { addDesibledCondition } from './util.js'
 import { removeDesibledCondition } from './util.js'
-import { createPopup } from './create-popup.js'
-import { createDescriptionObjects } from './data.js'
 
 const adForm = document.querySelector('.ad-form');
 const mapForm = document.querySelector('.map__filters');
@@ -11,12 +9,13 @@ const mapForm = document.querySelector('.map__filters');
 addDesibledCondition(adForm, 'fieldset');
 addDesibledCondition(mapForm, ['fieldset', 'select']);
 
+
+const map = L.map('map-canvas');
 export const mapConnect = function () {
-  const map = L.map('map-canvas')
-    .on('load', () => {
-      removeDesibledCondition(adForm, 'fieldset');
-      removeDesibledCondition(mapForm, ['fieldset', 'select']);
-    })
+  map.on('load', () => {
+    removeDesibledCondition(adForm, 'fieldset');
+    removeDesibledCondition(mapForm, ['fieldset', 'select']);
+  })
     .setView({
       lat: 35.67500,
       lng: 139.75000,
@@ -57,14 +56,14 @@ export const mapConnect = function () {
     const lng = evt.target.getLatLng().lng.toFixed(4);
     mapCoordinates.value = `${lat}, ${lng}`;
   });
+}
 
-  const descriptionObjects = createDescriptionObjects(8);
+export const addPopups = function (el) {
 
-  createPopup(descriptionObjects);
+  const listDescriptionObjects = document.querySelector('.map__canvas');
+  const popups = listDescriptionObjects.querySelectorAll('.popup');
 
-  const popups = document.querySelectorAll('.popup');
-
-  descriptionObjects.forEach((item, index) => {
+  el.forEach((item, index) => {
     const popup = popups[index];
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
@@ -73,8 +72,8 @@ export const mapConnect = function () {
     });
     const marker = L.marker(
       {
-        lat: item.offer.location.x,
-        lng: item.offer.location.y,
+        lat: item.location.lat,
+        lng: item.location.lng,
       },
       {
         icon,
@@ -84,4 +83,5 @@ export const mapConnect = function () {
       .addTo(map)
       .bindPopup(popup)
   });
+
 }
