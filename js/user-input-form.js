@@ -52,7 +52,6 @@ export const userInputForm = function () {
   })
 
 
-
   const changeCapacityRooms = function () {
     const rooms = Number(capacityRooms.value);
 
@@ -92,3 +91,11 @@ export const userInputForm = function () {
     timeIn.value = timeOut.value;
   }
 }
+
+// const formReset = function () {
+//   const adForm = document.querySelector('.ad-form');
+//   const buttonReset = document.querySelector('.ad-form__reset');
+//   buttonReset.onclick = function () {
+//     adForm.reset();
+//   }
+// }

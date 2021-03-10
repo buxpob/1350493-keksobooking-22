@@ -66,23 +66,30 @@ export const showAlert = (message) => {
 }
 
 
-export const showPopup = function (el) {
-  const popupTemplateInfo = document.querySelector(`#${el}`).content.querySelector(`.${el}`);
+export const showPopup = function (className, classButton = null) {
+  const popupTemplateInfo = document.querySelector(`#${className}`).content.querySelector(`.${className}`);
   const popupTemplate = popupTemplateInfo.cloneNode(true);
+  const main = document.querySelector('main');
   popupTemplate.style.zIndex = 999;
-  document.body.append(popupTemplate);
-  popupTemplate.style.display = 'none';
+  main.append(popupTemplate);
   popupTemplate.style.display = 'block';
 
 
   document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 27) {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
       popupTemplate.style.display = 'none';
     }
   })
 
   window.onclick = function (evt) {
     if (evt.target == popupTemplate) {
+      popupTemplate.style.display = 'none';
+    }
+  }
+
+  if (classButton != null) {
+    const buttonClose = popupTemplate.querySelector(`.${classButton}`);
+    buttonClose.onclick = function () {
       popupTemplate.style.display = 'none';
     }
   }

@@ -22,7 +22,7 @@ const listDescriptionObjects = document.querySelector('.map__canvas');
 const descriptionObjectTemplate = document.querySelector('#card').content.querySelector('.popup');
 const descriptionObjectFragment = document.createDocumentFragment();
 
-export const createPopup = function (arr) {
+export const createPopupsMap = function (arr) {
 
   arr.forEach((item) => {
     const el = descriptionObjectTemplate.cloneNode(true);
