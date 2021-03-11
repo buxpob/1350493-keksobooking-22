@@ -51,7 +51,8 @@ export const userInputForm = function () {
     }
   })
 
-  capacityRooms.addEventListener('change', () => {
+
+  const changeCapacityRooms = function () {
     const rooms = Number(capacityRooms.value);
 
     for (let i = 0; i < capacityGuests.length; i++) {
@@ -59,22 +60,27 @@ export const userInputForm = function () {
 
       if (guests <= rooms) {
         capacityGuests[i].disabled = false;
+        capacityGuests[i].selected = true;
       } else {
         capacityGuests[i].disabled = true;
       }
 
-      if (rooms === 100) {
-        if (guests !== 0) {
-          capacityGuests[i].disabled = true;
-        }
+      if (rooms === 100 && guests !== 0) {
+        capacityGuests[i].disabled = true;
+        capacityGuests[i].selected = false;
       }
 
-      if (rooms !== 100) {
-        if (guests === 0) {
-          capacityGuests[i].disabled = true;
-        }
+      if (rooms !== 100 && guests === 0) {
+        capacityGuests[i].disabled = true;
+        capacityGuests[i].selected = false;
       }
     }
+  }
+
+  changeCapacityRooms();
+
+  capacityRooms.addEventListener('change', () => {
+    changeCapacityRooms();
   })
 
   timeIn.onchange = function () {
@@ -85,3 +91,11 @@ export const userInputForm = function () {
     timeIn.value = timeOut.value;
   }
 }
+
+// const formReset = function () {
+//   const adForm = document.querySelector('.ad-form');
+//   const buttonReset = document.querySelector('.ad-form__reset');
+//   buttonReset.onclick = function () {
+//     adForm.reset();
+//   }
+// }

@@ -43,3 +43,54 @@ export const removeDesibledCondition = (el, attributeName) => {
     item.removeAttribute('disabled', 'disabled');
   })
 }
+
+export const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '999';
+  alertContainer.style.position = 'fixed';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = 0;
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '28px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, 5000);
+}
+
+
+export const showPopup = function (className, classButton = null) {
+  const popupTemplateInfo = document.querySelector(`#${className}`).content.querySelector(`.${className}`);
+  const popupTemplate = popupTemplateInfo.cloneNode(true);
+  const main = document.querySelector('main');
+  popupTemplate.style.zIndex = 999;
+  main.append(popupTemplate);
+  popupTemplate.style.display = 'block';
+
+
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      popupTemplate.style.display = 'none';
+    }
+  })
+
+  window.onclick = function (evt) {
+    if (evt.target == popupTemplate) {
+      popupTemplate.style.display = 'none';
+    }
+  }
+
+  if (classButton != null) {
+    const buttonClose = popupTemplate.querySelector(`.${classButton}`);
+    buttonClose.onclick = function () {
+      popupTemplate.style.display = 'none';
+    }
+  }
+}

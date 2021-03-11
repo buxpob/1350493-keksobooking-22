@@ -2,21 +2,20 @@
 
 import { addDesibledCondition } from './util.js'
 import { removeDesibledCondition } from './util.js'
-import { createPopup } from './create-popup.js'
-import { createDescriptionObjects } from './data.js'
 
 const adForm = document.querySelector('.ad-form');
 const mapForm = document.querySelector('.map__filters');
+const buttonReset = document.querySelector('.ad-form__reset');
 
 addDesibledCondition(adForm, 'fieldset');
 addDesibledCondition(mapForm, ['fieldset', 'select']);
 
-export const mapConnect = function () {
-  const map = L.map('map-canvas')
-    .on('load', () => {
-      removeDesibledCondition(adForm, 'fieldset');
-      removeDesibledCondition(mapForm, ['fieldset', 'select']);
-    })
+const map = L.map('map-canvas');
+const mapConnect = function () {
+  map.on('load', () => {
+    removeDesibledCondition(adForm, 'fieldset');
+    removeDesibledCondition(mapForm, ['fieldset', 'select']);
+  })
     .setView({
       lat: 35.67500,
       lng: 139.75000,
@@ -28,14 +27,17 @@ export const mapConnect = function () {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
   ).addTo(map);
+}
 
+let mainPinMarker;
+const addMainPinMarker = function () {
   const mainPinIcon = L.icon({
     iconUrl: 'img/main-pin.svg',
     iconSize: [50, 50],
     iconAnchor: [25, 50],
   });
 
-  const mainPinMarker = L.marker(
+  mainPinMarker = L.marker(
     {
       lat: 35.67500,
       lng: 139.75000,
@@ -46,25 +48,34 @@ export const mapConnect = function () {
     },
   )
 
-  mainPinMarker.addTo(map);
-
   let mapCoordinates = document.querySelector('#address');
   const mapCoordinatesStart = `${mainPinMarker._latlng.lat}, ${mainPinMarker._latlng.lng}`;
   mapCoordinates.value = mapCoordinatesStart;
+
+  mainPinMarker.addTo(map);
 
   mainPinMarker.on('moveend', (evt) => {
     const lat = evt.target.getLatLng().lat.toFixed(4);
     const lng = evt.target.getLatLng().lng.toFixed(4);
     mapCoordinates.value = `${lat}, ${lng}`;
   });
+}
 
-  const descriptionObjects = createDescriptionObjects(8);
+const resetForm = function () {
+  buttonReset.onclick = function (evt) {
+    evt.preventDefault();
+    mainPinMarker.remove(map);
+    adForm.reset();
+    addMainPinMarker();
+  };
+}
 
-  createPopup(descriptionObjects);
+export const addPopupsMap = function (el) {
 
-  const popups = document.querySelectorAll('.popup');
+  const listDescriptionObjects = document.querySelector('.map__canvas');
+  const popups = listDescriptionObjects.querySelectorAll('.popup');
 
-  descriptionObjects.forEach((item, index) => {
+  el.forEach((item, index) => {
     const popup = popups[index];
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
@@ -73,8 +84,8 @@ export const mapConnect = function () {
     });
     const marker = L.marker(
       {
-        lat: item.offer.location.x,
-        lng: item.offer.location.y,
+        lat: item.location.lat,
+        lng: item.location.lng,
       },
       {
         icon,
@@ -84,4 +95,10 @@ export const mapConnect = function () {
       .addTo(map)
       .bindPopup(popup)
   });
+}
+
+export const addMap = function () {
+  mapConnect();
+  addMainPinMarker();
+  resetForm();
 }
