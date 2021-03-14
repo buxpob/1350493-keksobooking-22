@@ -9,4 +9,4 @@ addMap();
 
 getFormSubmit();
 
-sendFormSubmit('success', 'error', 'error__button');
+sendFormSubmit();

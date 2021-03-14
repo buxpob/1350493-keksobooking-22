@@ -94,3 +94,25 @@ export const showPopup = function (className, classButton = null) {
     }
   }
 }
+
+export const previewPhoto = (inputFile, outputPreview, type) => {
+  inputFile.addEventListener('change', () => {
+    const file = inputFile.files[0];
+    const fileName = file.name.toLowerCase();
+
+    const matches = type.some((it) => {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      const reader = new FileReader();
+
+      reader.addEventListener('load', () => {
+        outputPreview.src = reader.result;
+      });
+
+      reader.readAsDataURL(file);
+    }
+  })
+};
+

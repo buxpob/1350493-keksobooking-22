@@ -1,11 +1,9 @@
 /* global L */
-
-import { addDesibledCondition } from './util.js'
-import { removeDesibledCondition } from './util.js'
+import { addDesibledCondition, removeDesibledCondition } from './util.js'
+import { resetFormClickButton } from './user-input-form.js'
 
 const adForm = document.querySelector('.ad-form');
 const mapForm = document.querySelector('.map__filters');
-const buttonReset = document.querySelector('.ad-form__reset');
 
 addDesibledCondition(adForm, 'fieldset');
 addDesibledCondition(mapForm, ['fieldset', 'select']);
@@ -29,15 +27,19 @@ const mapConnect = function () {
   ).addTo(map);
 }
 
-let mainPinMarker;
-const addMainPinMarker = function () {
+
+const mainPinMarkerLayer = L.layerGroup();
+export const addMainPinMarker = function () {
+
+  mainPinMarkerLayer.clearLayers();
+
   const mainPinIcon = L.icon({
     iconUrl: 'img/main-pin.svg',
     iconSize: [50, 50],
     iconAnchor: [25, 50],
   });
 
-  mainPinMarker = L.marker(
+  const mainPinMarker = L.marker(
     {
       lat: 35.67500,
       lng: 139.75000,
@@ -52,53 +54,54 @@ const addMainPinMarker = function () {
   const mapCoordinatesStart = `${mainPinMarker._latlng.lat}, ${mainPinMarker._latlng.lng}`;
   mapCoordinates.value = mapCoordinatesStart;
 
-  mainPinMarker.addTo(map);
+  mainPinMarkerLayer.addLayer(mainPinMarker);
+  mainPinMarkerLayer.addTo(map);
 
   mainPinMarker.on('moveend', (evt) => {
-    const lat = evt.target.getLatLng().lat.toFixed(4);
-    const lng = evt.target.getLatLng().lng.toFixed(4);
+    const lat = evt.target.getLatLng().lat.toFixed(5);
+    const lng = evt.target.getLatLng().lng.toFixed(5);
     mapCoordinates.value = `${lat}, ${lng}`;
   });
 }
 
-const resetForm = function () {
-  buttonReset.onclick = function (evt) {
-    evt.preventDefault();
-    mainPinMarker.remove(map);
-    adForm.reset();
-    addMainPinMarker();
-  };
+const listMarkers = L.layerGroup();
+export const addAdsPinMarker = function (arr, listPopups) {
+
+  listMarkers.clearLayers();
+
+  arr
+    .forEach((item, index) => {
+      const popup = listPopups[index];
+      const icon = L.icon({
+        iconUrl: 'img/pin.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+      });
+      const adPinMarker = L.marker(
+        {
+          lat: item.location.lat,
+          lng: item.location.lng,
+        },
+        {
+          icon,
+        },
+      );
+      adPinMarker.bindPopup(popup)
+      listMarkers.addLayer(adPinMarker);
+    });
+
+  listMarkers.addTo(map);
 }
 
-export const addPopupsMap = function (el) {
-
-  const listDescriptionObjects = document.querySelector('.map__canvas');
-  const popups = listDescriptionObjects.querySelectorAll('.popup');
-
-  el.forEach((item, index) => {
-    const popup = popups[index];
-    const icon = L.icon({
-      iconUrl: 'img/pin.svg',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-    });
-    const marker = L.marker(
-      {
-        lat: item.location.lat,
-        lng: item.location.lng,
-      },
-      {
-        icon,
-      },
-    );
-    marker
-      .addTo(map)
-      .bindPopup(popup)
-  });
+const type = document.querySelector('.map__filters-container');
+export const changeHousingType = (cb) => {
+  type.addEventListener('change', () => {
+    cb();
+  })
 }
 
 export const addMap = function () {
   mapConnect();
   addMainPinMarker();
-  resetForm();
+  resetFormClickButton();
 }
