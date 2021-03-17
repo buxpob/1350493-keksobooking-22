@@ -1,30 +1,35 @@
-import { showAlert } from './util.js'
-import { showPopup } from './util.js'
+import { showAlert, showPopup } from './util.js'
 import { createPopupsMap } from './create-popup.js'
-import { addPopupsMap } from './map-connect.js'
-import { getData } from './api.js'
-import { sendData } from './api.js'
-
+import { getData, sendData } from './api.js'
+import { changeHousingType } from './map-connect.js'
+import { resetForm } from './user-input-form.js'
 
 const adForm = document.querySelector('.ad-form');
+const RERENDER_DELAY = 500;
+
 
 export const getFormSubmit = () => {
-
-  getData(createPopupsMap, showAlert);
-  getData(addPopupsMap, showAlert);
+  getData((ads) => {
+    createPopupsMap(ads);
+    changeHousingType(
+      () => createPopupsMap(ads),
+      RERENDER_DELAY,
+    );
+  }, showAlert);
 }
 
-export const sendFormSubmit = (success, err, el) => {
+
+export const sendFormSubmit = () => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     sendData(
       new FormData(evt.target),
       () => {
-        showPopup(success);
-        adForm.reset();
+        showPopup('success');
+        resetForm();
       },
-      () => showPopup(err, el),
+      () => showPopup('error', 'error__button'),
     );
   });
 };

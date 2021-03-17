@@ -1,8 +1,21 @@
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
+import { getFormSubmit } from './form-handler.js'
+import { addMainPinMarker } from './map-connect.js'
+import { renderPhoto } from './util.js'
+
 const typePlacement = document.querySelector('#type');
 const pricePerNight = document.querySelector('#price');
 const titleAd = document.querySelector('#title');
 const capacityRooms = document.querySelector('#room_number');
 const capacityGuests = document.querySelector('#capacity');
+const adForm = document.querySelector('.ad-form');
+const mapForm = document.querySelector('.map__filters');
+const fileImgForMap = document.querySelector('.ad-form__field input[type=file]');
+const previewImgForMap = document.querySelector('.setup-photo-ad');
+const fileImgHousing = document.querySelector('.ad-form__upload input[type=file]');
+const previewImgHousing = document.querySelector('.setup-photo-housing');
+
 
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
@@ -90,12 +103,23 @@ export const userInputForm = function () {
   timeOut.onchange = function () {
     timeIn.value = timeOut.value;
   }
+
+  renderPhoto(fileImgForMap, previewImgForMap, FILE_TYPES);
+  renderPhoto(fileImgHousing, previewImgHousing, FILE_TYPES);
+
 }
 
-// const formReset = function () {
-//   const adForm = document.querySelector('.ad-form');
-//   const buttonReset = document.querySelector('.ad-form__reset');
-//   buttonReset.onclick = function () {
-//     adForm.reset();
-//   }
-// }
+export const resetForm = () => {
+  adForm.reset();
+  mapForm.reset();
+  addMainPinMarker();
+  getFormSubmit();
+}
+
+export const resetFormClickButton = function () {
+  const buttonReset = document.querySelector('.ad-form__reset');
+  buttonReset.onclick = function (evt) {
+    evt.preventDefault();
+    resetForm();
+  };
+}

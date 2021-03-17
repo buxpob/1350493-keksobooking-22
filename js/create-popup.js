@@ -1,3 +1,5 @@
+import { addAdsPinMarker } from './map-connect.js'
+
 const setTextContent = function (el, field, value, unit = '') {
   el.querySelector(`.popup__${field}`).textContent = `${value} ${unit}`;
   if (value === undefined || value.length === 0) {
@@ -22,9 +24,63 @@ const listDescriptionObjects = document.querySelector('.map__canvas');
 const descriptionObjectTemplate = document.querySelector('#card').content.querySelector('.popup');
 const descriptionObjectFragment = document.createDocumentFragment();
 
+
+const housingType = document.querySelector('#housing-type');
+const housingRooms = document.querySelector('#housing-rooms');
+const housingGuests = document.querySelector('#housing-guests');
+const housingPrice = document.querySelector('#housing-price');
+const housingFeatures = document.querySelector('#filter-wifi');
+const housingDishwasher = document.querySelector('#filter-dishwasher');
+const housingParking = document.querySelector('#filter-parking');
+const housingWasher = document.querySelector('#filter-washer');
+const housingElevator = document.querySelector('#filter-elevator');
+const housingConditioner = document.querySelector('#filter-conditioner');
+
+const lowPrice = 10000;
+const highPrice = 50000;
+
+const filterFeatures = (item, el) => {
+  if (item.checked === false || (item.checked && el.offer.features.includes(item.value))) {
+    return true;
+  }
+}
+
+const filterAmount = (el, field, test) => {
+  if (el.offer[`${test}`] === field.value
+    || el.offer[`${test}`] === Number(field.value)
+    || field.value == 'any') {
+    return true;
+  }
+}
+
+const filterPrice = (el) => {
+  if ((el.offer.price < lowPrice && housingPrice.value === 'low')
+    || (el.offer.price > lowPrice && el.offer.price < highPrice && housingPrice.value === 'middle')
+    || (el.offer.price > highPrice && housingPrice.value === 'high')
+    || (housingPrice.value === 'any')) {
+    return true;
+  }
+}
+
+const filterAds = (el) => {
+  if ((filterAmount(el, housingType, 'type'))
+    && (filterAmount(el, housingRooms, 'rooms'))
+    && (filterAmount(el, housingGuests, 'guests'))
+    && (filterPrice(el))
+    && (filterFeatures(housingFeatures, el))
+    && (filterFeatures(housingDishwasher, el))
+    && (filterFeatures(housingParking, el))
+    && (filterFeatures(housingWasher, el))
+    && (filterFeatures(housingElevator, el))
+    && (filterFeatures(housingConditioner, el))) {
+    return true;
+  }
+}
+
 export const createPopupsMap = function (arr) {
 
-  arr.forEach((item) => {
+  const adList = arr.filter(filterAds);
+  adList.forEach((item) => {
     const el = descriptionObjectTemplate.cloneNode(true);
 
     setTextContent(el, 'title', item.offer.title);
@@ -39,9 +95,14 @@ export const createPopupsMap = function (arr) {
     setTextContent(el, 'avatar', item.author.avatar);
 
     descriptionObjectFragment.appendChild(el);
+  });
 
+
+  listDescriptionObjects.querySelectorAll('.popup').forEach((el) => {
+    el.remove();
   });
 
   listDescriptionObjects.appendChild(descriptionObjectFragment);
 
+  addAdsPinMarker(adList, listDescriptionObjects.querySelectorAll('.popup'));
 }
