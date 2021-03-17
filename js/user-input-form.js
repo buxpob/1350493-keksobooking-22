@@ -2,7 +2,7 @@ const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 import { getFormSubmit } from './form-handler.js'
 import { addMainPinMarker } from './map-connect.js'
-import { previewPhoto } from './util.js'
+import { renderPhoto } from './util.js'
 
 const typePlacement = document.querySelector('#type');
 const pricePerNight = document.querySelector('#price');
@@ -104,8 +104,8 @@ export const userInputForm = function () {
     timeIn.value = timeOut.value;
   }
 
-  previewPhoto(fileImgForMap, previewImgForMap, FILE_TYPES);
-  previewPhoto(fileImgHousing, previewImgHousing, FILE_TYPES);
+  renderPhoto(fileImgForMap, previewImgForMap, FILE_TYPES);
+  renderPhoto(fileImgHousing, previewImgHousing, FILE_TYPES);
 
 }
 

@@ -95,7 +95,7 @@ export const showPopup = function (className, classButton = null) {
   }
 }
 
-export const previewPhoto = (inputFile, outputPreview, type) => {
+export const renderPhoto = (inputFile, outputPreview, type) => {
   inputFile.addEventListener('change', () => {
     const file = inputFile.files[0];
     const fileName = file.name.toLowerCase();

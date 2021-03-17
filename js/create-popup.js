@@ -39,38 +39,41 @@ const housingConditioner = document.querySelector('#filter-conditioner');
 const lowPrice = 10000;
 const highPrice = 50000;
 
-
-// const listFeatures = document.querySelectorAll('.features input[name=features]');
-// const filterFeatures = (list) => {
-//   list.forEach((item) => {
-//     if (item.checked === false || item.checked && el.offer.features.includes(item.value)) {
-//       return true;
-//     }
-//   });
-// }
-
 const filterFeatures = (item, el) => {
-  if (item.checked === false || item.checked && el.offer.features.includes(item.value)) {
+  if (item.checked === false || (item.checked && el.offer.features.includes(item.value))) {
+    return true;
+  }
+}
+
+const filterAmount = (el, field, test) => {
+  if (el.offer[`${test}`] === field.value
+    || el.offer[`${test}`] === Number(field.value)
+    || field.value == 'any') {
+    return true;
+  }
+}
+
+const filterPrice = (el) => {
+  if ((el.offer.price < lowPrice && housingPrice.value === 'low')
+    || (el.offer.price > lowPrice && el.offer.price < highPrice && housingPrice.value === 'middle')
+    || (el.offer.price > highPrice && housingPrice.value === 'high')
+    || (housingPrice.value === 'any')) {
     return true;
   }
 }
 
 const filterAds = (el) => {
-  if ((el.offer.type === housingType.value || housingType.value == 'any')
-    && (el.offer.rooms === Number(housingRooms.value) || housingRooms.value == 'any')
-    && (el.offer.guests === Number(housingGuests.value) || housingGuests.value == 'any')
-    && ((el.offer.price < lowPrice && housingPrice.value === 'low')
-      || (el.offer.price > lowPrice && el.offer.price < highPrice && housingPrice.value === 'middle')
-      || (el.offer.price > highPrice && housingPrice.value === 'high')
-      || (housingPrice.value === 'any'))
+  if ((filterAmount(el, housingType, 'type'))
+    && (filterAmount(el, housingRooms, 'rooms'))
+    && (filterAmount(el, housingGuests, 'guests'))
+    && (filterPrice(el))
     && (filterFeatures(housingFeatures, el))
     && (filterFeatures(housingDishwasher, el))
     && (filterFeatures(housingParking, el))
     && (filterFeatures(housingWasher, el))
     && (filterFeatures(housingElevator, el))
     && (filterFeatures(housingConditioner, el))) {
-
-    return true
+    return true;
   }
 }
 
@@ -93,6 +96,7 @@ export const createPopupsMap = function (arr) {
 
     descriptionObjectFragment.appendChild(el);
   });
+
 
   listDescriptionObjects.querySelectorAll('.popup').forEach((el) => {
     el.remove();

@@ -1,4 +1,5 @@
 /* global L */
+/* global _*/
 import { addDesibledCondition, removeDesibledCondition } from './util.js'
 import { resetFormClickButton } from './user-input-form.js'
 
@@ -94,11 +95,11 @@ export const addAdsPinMarker = function (arr, listPopups) {
 }
 
 const type = document.querySelector('.map__filters-container');
-export const changeHousingType = (cb) => {
+export const changeHousingType = _.throttle((cb) => {
   type.addEventListener('change', () => {
     cb();
   })
-}
+})
 
 export const addMap = function () {
   mapConnect();

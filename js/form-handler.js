@@ -1,5 +1,3 @@
-/* global_:readonly */
-
 import { showAlert, showPopup } from './util.js'
 import { createPopupsMap } from './create-popup.js'
 import { getData, sendData } from './api.js'
@@ -13,10 +11,10 @@ const RERENDER_DELAY = 500;
 export const getFormSubmit = () => {
   getData((ads) => {
     createPopupsMap(ads);
-    changeHousingType(_.throttle(
+    changeHousingType(
       () => createPopupsMap(ads),
       RERENDER_DELAY,
-    ));
+    );
   }, showAlert);
 }
 
