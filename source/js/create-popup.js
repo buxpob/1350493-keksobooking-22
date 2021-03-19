@@ -101,7 +101,6 @@ export const createPopupsMap = function (arr) {
   listDescriptionObjects.querySelectorAll('.popup').forEach((el) => {
     el.remove();
   });
-
   listDescriptionObjects.appendChild(descriptionObjectFragment);
 
   addAdsPinMarker(adList, listDescriptionObjects.querySelectorAll('.popup'));
