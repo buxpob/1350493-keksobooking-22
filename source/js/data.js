@@ -1,5 +1,3 @@
-import { getRandomInt, getRandomIntFloatPoint, getRandomElements, getShuffelElements } from './util.js'
-
 const TYPES = ['palace', 'flat', 'house', 'bungalow'];
 const TIME_VALUES = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -8,6 +6,9 @@ const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ]
+
+import { getRandomInt, getRandomIntFloatPoint, getRandomElements, getShuffelElements } from './util.js'
+
 
 const createAuthor = () => {
   let numberAvatar = getRandomInt(1, 8);

@@ -1,3 +1,9 @@
+const AMOUNT_ADS = 10;
+const Price = {
+  LOW: 10000,
+  HIGH: 50000,
+}
+
 import { addAdsPinMarker } from './map-connect.js'
 
 const setTextContent = function (el, field, value, unit = '') {
@@ -24,7 +30,6 @@ const listDescriptionObjects = document.querySelector('.map__canvas');
 const descriptionObjectTemplate = document.querySelector('#card').content.querySelector('.popup');
 const descriptionObjectFragment = document.createDocumentFragment();
 
-
 const housingType = document.querySelector('#housing-type');
 const housingRooms = document.querySelector('#housing-rooms');
 const housingGuests = document.querySelector('#housing-guests');
@@ -35,9 +40,6 @@ const housingParking = document.querySelector('#filter-parking');
 const housingWasher = document.querySelector('#filter-washer');
 const housingElevator = document.querySelector('#filter-elevator');
 const housingConditioner = document.querySelector('#filter-conditioner');
-
-const lowPrice = 10000;
-const highPrice = 50000;
 
 const filterFeatures = (item, el) => {
   if (item.checked === false || (item.checked && el.offer.features.includes(item.value))) {
@@ -54,9 +56,9 @@ const filterAmount = (el, field, test) => {
 }
 
 const filterPrice = (el) => {
-  if ((el.offer.price < lowPrice && housingPrice.value === 'low')
-    || (el.offer.price > lowPrice && el.offer.price < highPrice && housingPrice.value === 'middle')
-    || (el.offer.price > highPrice && housingPrice.value === 'high')
+  if ((el.offer.price < Price.LOW && housingPrice.value === 'low')
+    || (el.offer.price > Price.LOW && el.offer.price < Price.HIGH && housingPrice.value === 'middle')
+    || (el.offer.price > Price.HIGH && housingPrice.value === 'high')
     || (housingPrice.value === 'any')) {
     return true;
   }
@@ -78,8 +80,7 @@ const filterAds = (el) => {
 }
 
 export const createPopupsMap = function (arr) {
-
-  const adList = arr.filter(filterAds);
+  const adList = arr.slice(0, AMOUNT_ADS).filter(filterAds);
   adList.forEach((item) => {
     const el = descriptionObjectTemplate.cloneNode(true);
 
@@ -96,7 +97,6 @@ export const createPopupsMap = function (arr) {
 
     descriptionObjectFragment.appendChild(el);
   });
-
 
   listDescriptionObjects.querySelectorAll('.popup').forEach((el) => {
     el.remove();

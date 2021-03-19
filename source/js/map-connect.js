@@ -1,5 +1,5 @@
 /* global L */
-/* global _*/
+/* global _ */
 import { addDesibledCondition, removeDesibledCondition } from './util.js'
 import { resetFormClickButton } from './user-input-form.js'
 

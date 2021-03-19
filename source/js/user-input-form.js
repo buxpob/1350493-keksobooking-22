@@ -20,7 +20,7 @@ const previewImgHousing = document.querySelector('.setup-photo-housing');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 
-const MapPlaceToPrice = {
+let mapPlaceToPrice = {
   bungalow: 0,
   flat: 1000,
   house: 5000,
@@ -46,10 +46,10 @@ export const userInputForm = function () {
   }
 
   typePlacement.onchange = function () {
-    pricePerNight.placeholder = MapPlaceToPrice[typePlacement.value];
+    pricePerNight.placeholder = mapPlaceToPrice[typePlacement.value];
   }
 
-  pricePerNight.min = MapPlaceToPrice[typePlacement.value];
+  pricePerNight.min = mapPlaceToPrice[typePlacement.value];
   const minPrice = pricePerNight.min;
 
   pricePerNight.addEventListener('invalid', () => {
