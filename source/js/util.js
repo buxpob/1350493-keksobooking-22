@@ -82,12 +82,12 @@ export const showPopup = function (className, classButton = null) {
   })
 
   window.onclick = function (evt) {
-    if (evt.target == popupTemplate) {
+    if (evt.target === popupTemplate) {
       popupTemplate.style.display = 'none';
     }
   }
 
-  if (classButton != null) {
+  if (classButton !== null) {
     const buttonClose = popupTemplate.querySelector(`.${classButton}`);
     buttonClose.onclick = function () {
       popupTemplate.style.display = 'none';

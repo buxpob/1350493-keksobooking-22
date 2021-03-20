@@ -42,7 +42,7 @@ export const userInputForm = function () {
   });
 
   pricePerNight.onkeydown = function (evt) {
-    return evt.keyCode == 69 ? false : true;
+    return evt.keyCode === 69 ? false : true;
   }
 
   typePlacement.onchange = function () {

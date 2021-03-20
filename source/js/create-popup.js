@@ -1,5 +1,4 @@
 const AMOUNT_ADS = 10;
-
 const Price = {
   LOW: 10000,
   HIGH: 50000,
@@ -51,7 +50,7 @@ const filterFeatures = (item, el) => {
 const filterAmount = (el, field, test) => {
   if (el.offer[`${test}`] === field.value
     || el.offer[`${test}`] === Number(field.value)
-    || field.value == 'any') {
+    || field.value === 'any') {
     return true;
   }
 }
