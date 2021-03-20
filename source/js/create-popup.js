@@ -1,4 +1,5 @@
 const AMOUNT_ADS = 10;
+
 const Price = {
   LOW: 10000,
   HIGH: 50000,
