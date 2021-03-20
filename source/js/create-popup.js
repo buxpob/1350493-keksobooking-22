@@ -79,8 +79,23 @@ const filterAds = (el) => {
   }
 }
 
-export const createPopupsMap = function (arr) {
-  const adList = arr.slice(0, AMOUNT_ADS).filter(filterAds);
+let adList = [];
+const clipAdList = (list) => { 
+  adList = []; 
+  for (let i = 0; i < list.length; i++) {
+    if (filterAds(list[i])) {
+      adList.push(list[i]);
+    }
+    if (adList.length >= AMOUNT_ADS) {
+      break;
+    }    
+  }
+}
+
+export const createPopupsMap = function (arr) {  
+
+  clipAdList(arr);
+
   adList.forEach((item) => {
     const el = descriptionObjectTemplate.cloneNode(true);
 
@@ -101,7 +116,6 @@ export const createPopupsMap = function (arr) {
   listDescriptionObjects.querySelectorAll('.popup').forEach((el) => {
     el.remove();
   });
-
   listDescriptionObjects.appendChild(descriptionObjectFragment);
 
   addAdsPinMarker(adList, listDescriptionObjects.querySelectorAll('.popup'));
