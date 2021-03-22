@@ -1,4 +1,8 @@
-export const getRandomInt = function (min, max) {
+const templateSuccessPopup = document.querySelector('#success').content.querySelector('.success');
+const templateErrorPopup = document.querySelector('#error').content.querySelector('.error');
+const main = document.querySelector('main');
+
+export const getRandomInt = (min, max) => {
   if (min < 0) {
     alert('Диапазон может быть только положительный, включая ноль!');
   }
@@ -9,7 +13,7 @@ export const getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-export const getRandomIntFloatPoint = function (min, max, floatPoint = 2) {
+export const getRandomIntFloatPoint = (min, max, floatPoint = 2) => {
   if (min < 0) {
     alert('Диапазон может быть только положительный, включая ноль!');
   }
@@ -65,38 +69,51 @@ export const showAlert = (message) => {
   }, 5000);
 }
 
+const closePopup = (evt, el) => {
+  evt.preventDefault();
+  el.style.display = 'none';
+  document.onkeydown = null;
+  window.onclick = null;
+}
 
-export const showPopup = function (className, classButton = null) {
-  const popupTemplateInfo = document.querySelector(`#${className}`).content.querySelector(`.${className}`);
-  const popupTemplate = popupTemplateInfo.cloneNode(true);
-  const main = document.querySelector('main');
-  popupTemplate.style.zIndex = 999;
-  main.append(popupTemplate);
-  popupTemplate.style.display = 'block';
+const showPopup = (template) => {
+  template.style.zIndex = 999;
+  main.append(template);
+  template.style.display = 'block';
 
-
-  document.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      popupTemplate.style.display = 'none';
-    }
-  })
-
-  window.onclick = function (evt) {
-    if (evt.target === popupTemplate) {
-      popupTemplate.style.display = 'none';
+  document.onkeydown = (evt) => {
+    if (evt.key === ('Escape' || 'Esc')) {
+      closePopup(evt, template);
     }
   }
 
-  if (classButton !== null) {
-    const buttonClose = popupTemplate.querySelector(`.${classButton}`);
-    buttonClose.onclick = function () {
-      popupTemplate.style.display = 'none';
+  window.onclick = (evt) => {
+    if (evt.target === template) {
+      closePopup(evt, template);
     }
   }
 }
 
+export const showSuccessPopup = () => {
+  const popupTemplate = templateSuccessPopup.cloneNode(true);
+  showPopup(popupTemplate);
+}
+
+export const showErrorPopup = () => {
+  const popupTemplate = templateErrorPopup.cloneNode(true);
+  const buttonClose = popupTemplate.querySelector('.error__button');
+
+  showPopup(popupTemplate);
+
+  buttonClose.onclick = (evt) => {
+    closePopup(evt, popupTemplate);
+    buttonClose.onclick = null;
+  }
+}
+
+
 export const renderPhoto = (inputFile, outputPreview, type) => {
-  inputFile.addEventListener('change', () => {
+  inputFile.onchange = () => {
     const file = inputFile.files[0];
     const fileName = file.name.toLowerCase();
 
@@ -107,12 +124,12 @@ export const renderPhoto = (inputFile, outputPreview, type) => {
     if (matches) {
       const reader = new FileReader();
 
-      reader.addEventListener('load', () => {
+      reader.onload = () => {
         outputPreview.src = reader.result;
-      });
+      };
 
       reader.readAsDataURL(file);
     }
-  })
+  }
 };
 

@@ -1,6 +1,6 @@
 const RERENDER_DELAY = 500;
 
-import { showAlert, showPopup } from './util.js'
+import { showAlert, showSuccessPopup, showErrorPopup } from './util.js'
 import { createPopupsMap } from './create-popup.js'
 import { getData, sendData } from './api.js'
 import { changeHousingType } from './map-connect.js'
@@ -26,10 +26,10 @@ export const sendFormSubmit = () => {
     sendData(
       new FormData(evt.target),
       () => {
-        showPopup('success');
+        showSuccessPopup();
         resetForm();
       },
-      () => showPopup('error', 'error__button'),
+      () => showErrorPopup(),
     );
   });
 };

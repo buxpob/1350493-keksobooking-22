@@ -6,14 +6,34 @@ const Price = {
 
 import { addAdsPinMarker } from './map-connect.js'
 
-const setTextContent = function (el, field, value, unit = '') {
+const setTextContent = (el, field, value, unit = '') => {
   el.querySelector(`.popup__${field}`).textContent = `${value} ${unit}`;
   if (value === undefined || value.length === 0) {
     el.querySelector(`.popup__${field}`).remove();
   }
 }
 
-const getType = function (type) {
+const templateElementPhoto = document.querySelector('#card').content.querySelector('.popup__photo');
+const franmentElementPhoto = document.createDocumentFragment();
+
+const setPhoto = (el, field, arr) => {
+  el.querySelector('.popup__photo').src = arr[0];
+  if (arr.length > 1) {
+
+    for (let i = 1; i < arr.length; i++) {
+      const itemPhoto = templateElementPhoto.cloneNode(true);
+      itemPhoto.src = arr[i];
+      franmentElementPhoto.appendChild(itemPhoto);
+    }
+  }
+  el.querySelector(`.popup__${field}`).appendChild(franmentElementPhoto);
+
+  if (arr === undefined || arr.length === 0) {
+    el.querySelector(`.popup__${field}`).remove();
+  }
+}
+
+const getType = (type) => {
   switch (type) {
     case 'flat':
       return 'Квартира';
@@ -92,7 +112,7 @@ const clipAdList = (list) => {
   }
 }
 
-export const createPopupsMap = function (arr) {
+export const createPopupsMap = (arr) => {
 
   clipAdList(arr);
 
@@ -107,7 +127,7 @@ export const createPopupsMap = function (arr) {
     setTextContent(el, 'text--time', `Заезд после ${item.offer.checkin}, выезд до ${item.offer.checkout}`);
     setTextContent(el, 'features', item.offer.features.join(', '));
     setTextContent(el, 'description', item.offer.description);
-    setTextContent(el, 'photos', item.offer.photos.join(', '));
+    setPhoto(el, 'photos', item.offer.photos);
     setTextContent(el, 'avatar', item.author.avatar);
 
     descriptionObjectFragment.appendChild(el);

@@ -27,9 +27,9 @@ let mapPlaceToPrice = {
   palace: 10000,
 };
 
-export const userInputForm = function () {
+export const userInputForm = () => {
 
-  titleAd.addEventListener('invalid', () => {
+  titleAd.oninvalid = () => {
     if (titleAd.validity.tooShort) {
       titleAd.setCustomValidity('Объявление должно состоять минимум из 30 символов');
     } else if (titleAd.validity.tooLong) {
@@ -39,20 +39,20 @@ export const userInputForm = function () {
     } else {
       titleAd.setCustomValidity('');
     }
-  });
+  }
 
-  pricePerNight.onkeydown = function (evt) {
+  pricePerNight.onkeydown = (evt) => {
     return evt.keyCode === 69 ? false : true;
   }
 
-  typePlacement.onchange = function () {
+  typePlacement.onchange = () => {
     pricePerNight.placeholder = mapPlaceToPrice[typePlacement.value];
   }
 
   pricePerNight.min = mapPlaceToPrice[typePlacement.value];
   const minPrice = pricePerNight.min;
 
-  pricePerNight.addEventListener('invalid', () => {
+  pricePerNight.oninvalid = () => {
     if (pricePerNight.validity.rangeOverflow) {
       pricePerNight.setCustomValidity('Максимальная цена за ночь 1 000 000');
     } else if (pricePerNight.validity.rangeUnderflow) {
@@ -62,10 +62,10 @@ export const userInputForm = function () {
     } else {
       pricePerNight.setCustomValidity('');
     }
-  })
+  }
 
 
-  const changeCapacityRooms = function () {
+  const changeCapacityRooms = () => {
     const rooms = Number(capacityRooms.value);
 
     for (let i = 0; i < capacityGuests.length; i++) {
@@ -92,15 +92,15 @@ export const userInputForm = function () {
 
   changeCapacityRooms();
 
-  capacityRooms.addEventListener('change', () => {
+  capacityRooms.onchange = () => {
     changeCapacityRooms();
-  })
+  }
 
-  timeIn.onchange = function () {
+  timeIn.onchange = () => {
     timeOut.value = timeIn.value;
   }
 
-  timeOut.onchange = function () {
+  timeOut.onchange = () => {
     timeIn.value = timeOut.value;
   }
 
@@ -116,7 +116,7 @@ export const resetForm = () => {
   getFormSubmit();
 }
 
-export const resetFormClickButton = function () {
+export const resetFormClickButton = () => {
   const buttonReset = document.querySelector('.ad-form__reset');
   buttonReset.onclick = function (evt) {
     evt.preventDefault();
